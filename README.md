@@ -3,6 +3,7 @@ puzzles
 A growing collection of interesting programming puzzles (and solutions).
 
 All puzzles have, at a minimum, the following public interface:
+
     from puzzles import somepuzzle
     puzzle = somepuzzle.new(inputs ...)
     solution = somepuzzle.solve(puzzle)
