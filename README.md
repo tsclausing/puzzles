@@ -26,7 +26,7 @@ between words have been removed.
 * Example: "yarmdahaeltltibaml"
 
 You are given a list of possible words in the sentence.
-* The dictionary includes, at a minimum, ("little", "a", "had", "lamb", "mary")
+* The words include, at a minimum, the words in the sentence: ("little", "a", "had", "lamb", "mary")
 
 Write an algorithm which accepts the scrambled sentence and the list of words to
 produce the original sentence with spaces and un-shuffled words.
