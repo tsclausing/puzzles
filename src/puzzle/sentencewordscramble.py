@@ -1,29 +1,28 @@
 """
 Sentence Word Scramble Puzzle.
 
-Description:
-============
-You have a sentence with several words with spaces removed and the words have
-their character order shuffled. You have a dictionary to lookup. Write an
-algorithm to produce the original sentence back with spaces and words with normal
-character order.
+You are given a sentence where each word's character order is shuffled and spaces
+between words have been removed.
+* "mary had a little lamb" may become "yarmdahaeltltibaml"
 
-Examples:
---------
->>> 'mary had a little lamb' in solve(puzzle("Mary had a little lamb."))
+You are given a list of possible words in the sentence.
+* The dictionary includes, at a minimum, ("little", "a", "had", "lamb", "mary")
+
+Write an algorithm which accepts the scrambled sentence and the list of words to
+produce the original sentence with spaces and un-shuffled words.
+
+>>> 'mary had a little lamb' in solve(new("Mary had a little lamb."))
 True
 
 Test this 100 times to ensure backtracking:
->>> solutions = [solve(puzzle("Mary had a little lamb.")) for _ in range(100)]
+>>> solutions = [solve(new("Mary had a little lamb.")) for _ in range(100)]
 >>> all(map(lambda solution: 'mary had a little lamb' in solution, solutions))
 True
 
 Add more words to Puzzle to increase complexity:
->>> solutions = solve(puzzle('Mary had a little lamb.', ('yarm', 'ahad', 'lit', 'balm')))
+>>> solutions = solve(new('Mary had a little lamb.', ('yarm', 'ahad', 'lit', 'balm')))
 >>> 'mary had a little lamb' in solutions
 True
-
-Author: Scot Clausing
 """
 import re
 import random
@@ -36,9 +35,13 @@ import collections
 Puzzle = collections.namedtuple('Puzzle', 'words sentence')
 
 
-def puzzle(sentence, more_words=()):
+def new(sentence, more_words=()):
     """
-    Return a 'Sentence Word Scramble' Puzzle created from the sentence.
+    Return a new 'Sentence Word Scramble' Puzzle created from the sentence.
+
+    >>> puzzle = new("Mary had a little lamb.")
+    >>> isinstance(puzzle, Puzzle)
+    True
     """
     sentence = _sanitize_sentence(sentence)
     words = sentence.split()
@@ -55,6 +58,11 @@ def puzzle(sentence, more_words=()):
 def solve(puzzle):
     """
     Return all solutions to the puzzle.
+
+    >>> puzzle = new("Mary had a little lamb.")
+    >>> solution = solve(puzzle)
+    >>> "mary had a little lamb" in solution
+    True
     """
     assert isinstance(puzzle, Puzzle)
 
