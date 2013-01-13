@@ -11,7 +11,10 @@ You are given a list of possible words in the sentence.
 Write an algorithm which accepts the scrambled sentence and the list of words to
 produce the original sentence with spaces and un-shuffled words.
 
->>> 'mary had a little lamb' in solve(new("Mary had a little lamb."))
+Example:
+>>> puzzle = new("Mary had a little lamb.")
+>>> solution = solve(puzzle)
+>>> 'mary had a little lamb' in solution
 True
 
 Test this 100 times to ensure backtracking:
@@ -20,19 +23,19 @@ Test this 100 times to ensure backtracking:
 True
 
 Add more words to Puzzle to increase complexity:
->>> solutions = solve(new('Mary had a little lamb.', ('yarm', 'ahad', 'lit', 'balm')))
->>> 'mary had a little lamb' in solutions
+>>> solution = solve(new('Mary had a little lamb.', ('yarm', 'ahad', 'lit', 'balm')))
+>>> 'mary had a little lamb' in solution
 True
 """
 import re
 import random
-import collections
+from collections import namedtuple, defaultdict
 
 ###
 # Public
 ###
 
-Puzzle = collections.namedtuple('Puzzle', 'words sentence')
+Puzzle = namedtuple('Puzzle', 'words sentence')
 
 
 def new(sentence, more_words=()):
@@ -59,7 +62,7 @@ def solve(puzzle):
     """
     Return all solutions to the puzzle.
 
-    >>> puzzle = new("Mary had a little lamb.")
+    >>> puzzle = new("mary had a little lamb")
     >>> solution = solve(puzzle)
     >>> "mary had a little lamb" in solution
     True
@@ -67,7 +70,7 @@ def solve(puzzle):
     assert isinstance(puzzle, Puzzle)
 
     # {index: [word, ...]}
-    possibilities_at = collections.defaultdict(list)
+    possibilities_at = defaultdict(list)
 
     # find possible positions of each word in the sentence
     for word in puzzle.words:
