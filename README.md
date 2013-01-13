@@ -12,10 +12,10 @@ solve() will return an iterable, or a generator if there are infinite or very ma
 solutions.
 
 **Thoughts:**
-* Puzzles are fun. Solve each one yourself before reading the solution.
-* Puzzles are great interview questions: discuss solutions, optimizations, corner cases, etc.
-* Solutions can be improved. Feel free to fork and send a pull request :)
-* Please send me new puzzle descriptions!
+* Puzzles are the most fun when solved yourself before reading a solution.
+* Puzzles make great interview questions: discuss solutions, optimizations, corner cases, etc.
+* Solutions can be always be improved. Please fork and send a pull request :)
+* Please send new puzzle descriptions!
 
 A summary of each included puzzle follows ...
 
@@ -30,7 +30,16 @@ You are given a list of possible words in the sentence.
 
 Write an algorithm which accepts the scrambled sentence and the list of words to
 produce the original sentence with spaces and un-shuffled words.
+* "yarmdahaeltltibaml" + ("little", "a", "had", "lamb", "mary") -> "mary had a little lamb"
 
 Cards Face Up
 -------------
-(coming soon)
+You are given a full deck of cards, face-down. Four cards are flipped face-up and
+randomly re-inserted into the deck.
+
+Write an algorithm which accepts the deck and, using all cards in the deck,
+produces at least two collections of cards each containing an equal number of
+face-up cards. The catch? The algorithm may *not* look at the cards. (Think about
+having to do this by hand, blindfolded.)
+
+* Cards may not be cut in half! (My favorite solution)
