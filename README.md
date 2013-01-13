@@ -37,9 +37,9 @@ Cards Face Up
 You are given a full deck of cards, face-down. Four cards are flipped face-up and
 randomly re-inserted into the deck.
 
-Write an algorithm which accepts the deck and, using all cards in the deck,
-produces at least two collections of cards each containing an equal number of
-face-up cards. The catch? The algorithm may *not* look at the cards. (Think about
-having to do this by hand, blindfolded.)
+Write an algorithm which accepts the shuffled deck and, using all cards, produces
+at least two collections of cards each containing an equal number of face-up
+cards. The catch? The algorithm may *not* look at the orientation of the cards.
+(Think about having to do this by hand, blindfolded.)
 
 * The deck of cards may not be cut in half (as in, with a hatchet)! *My favorite solution.*
