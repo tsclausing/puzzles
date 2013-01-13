@@ -14,17 +14,16 @@ having to do this by hand, blindfolded.)
 Example:
 >>> puzzle = new()
 >>> stack_one, stack_two = solve(puzzle)
->>> Counter(stack_one)[FaceUp()] == Counter(stack_two)[FaceUp()]
+>>> Counter(stack_one)[FaceUp] == Counter(stack_two)[FaceUp]
 True
 
 Specify the number of cards flipped:
 >>> puzzle = new(30)
 >>> stack_one, stack_two = solve(puzzle)
->>> Counter(stack_one)[FaceUp()] == Counter(stack_two)[FaceUp()]
+>>> Counter(stack_one)[FaceUp] == Counter(stack_two)[FaceUp]
 True
 """
 import random
-import functools
 from collections import namedtuple, Counter
 
 ###
@@ -32,10 +31,10 @@ from collections import namedtuple, Counter
 ###
 
 Puzzle = namedtuple('Puzzle', 'deck flip_count')
-Card = namedtuple('Card', 'face_up')
 
-FaceDown = functools.partial(Card, face_up=False)
-FaceUp = functools.partial(Card, face_up=True)
+# cards are either face-up or face-down, so we'll just use bool values
+FaceUp = True
+FaceDown = False
 
 
 def new(flip_count=4):
@@ -47,12 +46,12 @@ def new(flip_count=4):
     True
     >>> len(puzzle.deck)
     52
-    >>> Counter(puzzle.deck)[FaceUp()]
+    >>> Counter(puzzle.deck)[FaceUp]
     7
     """
     assert flip_count < 52
 
-    deck = [FaceDown() for _ in range(52)]
+    deck = [FaceDown for _ in range(52)]
     deck[:flip_count] = _flip(deck[:flip_count])
     random.shuffle(deck)
     return Puzzle(tuple(deck), flip_count)
@@ -65,7 +64,7 @@ def solve(puzzle):
 
     >>> puzzle = new()
     >>> stack_one, stack_two = solve(puzzle)
-    >>> Counter(stack_one)[FaceUp()] == Counter(stack_two)[FaceUp()]
+    >>> Counter(stack_one)[FaceUp] == Counter(stack_two)[FaceUp]
     True
     """
     assert isinstance(puzzle, Puzzle)
@@ -80,8 +79,14 @@ def solve(puzzle):
 
 
 def _flip(cards):
-    flipped_cards = [Card(not card.face_up) for card in cards]
-    return tuple(flipped_cards)
+    """
+    Flip each card in the stack.
+
+    >>> _flip((FaceUp, FaceDown,)) == (FaceDown, FaceUp)
+    True
+    """
+    flipped = [not card for card in cards]
+    return tuple(flipped)
 
 
 def _cut(cards, *stack_sizes):
