@@ -42,4 +42,4 @@ produces at least two collections of cards each containing an equal number of
 face-up cards. The catch? The algorithm may *not* look at the cards. (Think about
 having to do this by hand, blindfolded.)
 
-* Cards may not be cut in half! (My favorite solution)
+* The deck of cards may not be cut in half (as in, with a hatchet)! *My favorite solution.*
