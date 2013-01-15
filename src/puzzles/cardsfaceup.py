@@ -116,12 +116,30 @@ def _cut(cards, *stack_sizes):
     True
     """
     stacks = []
-    index = 0
-    for size in stack_sizes:
-        stack = tuple(cards[index:index + size])
+    start = 0
+    for stack_size in stack_sizes:
+        # stack of 0?
+        if not stack_size:
+            stacks.append(())
+            continue
+
+        # sanitize input
+        stack_size = abs(stack_size)
+        start = min(start, len(cards))
+        end = min(start + stack_size, len(cards))
+
+        # break early if out of cards
+        if start == end:
+            break
+
+        # add new stack to stacks and increase start
+        stack = tuple(cards[start:end])
         stacks.append(stack)
-        index += size
-    if index < len(cards):
-        stack = tuple(cards[index:])
-        stacks.append(stack)
+        start = end
+    # cards left over?
+    else:
+        if start < len(cards):
+            stack = tuple(cards[start:])
+            stacks.append(stack)
+
     return tuple(stacks)
