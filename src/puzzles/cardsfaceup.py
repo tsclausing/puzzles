@@ -41,15 +41,18 @@ def new(flip_count=4):
     """
     Return a shuffled deck (tuple) of 52 Cards, flip_count face-up.
 
-    >>> puzzle = new(7)
-    >>> isinstance(puzzle, Puzzle)
-    True
-    >>> len(puzzle.deck)
+    :param flip_count: Number of cards in the deck to flip face-up.
+    :type flip_count: int
+    :return: Puzzle instance containing the deck of cards and flip_count.
+    :rtype: Puzzle
+
+    >>> deck, flip_count = new(flip_count=7)
+    >>> len(deck)
     52
-    >>> Counter(puzzle.deck)[FaceUp]
-    7
+    >>> Counter(deck)[FaceUp] == flip_count
+    True
     """
-    assert flip_count < 52
+    flip_count = min(abs(flip_count), 51) or 1
 
     deck = [FaceDown for _ in range(52)]
     deck[:flip_count] = _flip(deck[:flip_count])
@@ -62,15 +65,18 @@ def solve(puzzle):
     Return two stacks, each with the same number of face-up cards.
     In other words, pull puzzle.flip_count cards off the top and flip 'em!
 
+    :param puzzle: Puzzle instance, likely returned by new()
+    :type puzzle: Puzzle
+    :return: The solution; two stacks (tuple) of cards with the same number of face-up cards.
+    :rtype: tuple
+
     >>> puzzle = new()
     >>> stack_one, stack_two = solve(puzzle)
     >>> Counter(stack_one)[FaceUp] == Counter(stack_two)[FaceUp]
     True
     """
-    assert isinstance(puzzle, Puzzle)
-
-    top_four, the_rest = _cut(puzzle.deck, puzzle.flip_count)
-    return _flip(top_four), the_rest
+    to_flip, the_rest = _cut(puzzle.deck, puzzle.flip_count)
+    return _flip(to_flip), the_rest
 
 
 ###
@@ -82,6 +88,11 @@ def _flip(cards):
     """
     Flip each card in the stack.
 
+    :param cards: A tuple of cards to flip.
+    :type cards: tuple
+    :return: A tuple of flipped cards FaceUp->FaceDown and FaceDown->FaceUp.
+    :rtype: tuple
+
     >>> _flip((FaceUp, FaceDown,)) == (FaceDown, FaceUp)
     True
     """
@@ -91,18 +102,19 @@ def _flip(cards):
 
 def _cut(cards, *stack_sizes):
     """
-    Return stacks of stack_sizes, and a stack of any left over.
+    Return stacks of stack_sizes if possible, left to right, and leftovers.
 
-    >>> _cut(range(10), 1, 2, 3)
-    ((0,), (1, 2), (3, 4, 5), (6, 7, 8, 9))
+    :param cards: A tuple of cards to cut.
+    :type cards: tuple
+    :param stack_sizes: Sizes of the stacks to be returned.
+    :type stack_sizes: int
+    :return: stacks of stack_sizes if possible, left to right, and leftovers.
+    :rtype: tuple
 
-    >>> _cut(range(10), 1, 2, 10)
-    Traceback (most recent call last):
-        ...
-    AssertionError
+    >>> stacks = _cut((FaceDown, FaceDown, FaceUp, FaceDown, FaceUp), 0, 1, 2, -3)
+    >>> stacks == ((), (FaceDown,), (FaceDown, FaceUp), (FaceDown, FaceUp))
+    True
     """
-    assert sum(stack_sizes) <= len(cards)
-
     stacks = []
     index = 0
     for size in stack_sizes:
