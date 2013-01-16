@@ -102,7 +102,10 @@ def _flip(cards):
 
 def _cut(cards, *stack_sizes):
     """
-    Return stacks of stack_sizes if possible, left to right, and leftovers.
+    Return stacks of stack_sizes if possible, and leftovers.
+    + stack sizes from the top of the deck of cards
+    - stack sizes from the bottom of the deck of cards
+    Stack sizes are operated on left-to-right.
 
     :param cards: A tuple of cards to cut.
     :type cards: tuple
@@ -111,35 +114,34 @@ def _cut(cards, *stack_sizes):
     :return: stacks of stack_sizes if possible, left to right, and leftovers.
     :rtype: tuple
 
-    >>> stacks = _cut((FaceDown, FaceDown, FaceUp, FaceDown, FaceUp), 0, 1, 2, -3)
-    >>> stacks == ((), (FaceDown,), (FaceDown, FaceUp), (FaceDown, FaceUp))
+    >>> stacks = _cut((FaceDown, FaceDown, FaceUp, FaceDown, FaceUp), 0, 1, -3, 5, 10)
+    >>> stacks == ((), (FaceDown,), (FaceUp, FaceDown, FaceUp), (FaceDown,))
     True
     """
     stacks = []
-    start = 0
-    for stack_size in stack_sizes:
-        # stack of 0?
-        if not stack_size:
-            stacks.append(())
-            continue
 
-        # sanitize input
-        stack_size = abs(stack_size)
-        start = min(start, len(cards))
-        end = min(start + stack_size, len(cards))
+    def step(cards, stack_sizes):
+        if cards and stack_sizes:
+            stack_size, stack_sizes = stack_sizes[0], stack_sizes[1:]
 
-        # break early if out of cards
-        if start == end:
-            break
+            # cards from top of deck
+            if stack_size > 0:
+                stacks.append(cards[:stack_size])
+                cards = cards[stack_size:]
+            # cards from bottom of deck
+            elif stack_size < 0:
+                stacks.append(cards[stack_size:])
+                cards = cards[:stack_size]
+            # empty stack
+            elif stack_size == 0:
+                stacks.append(())
 
-        # add new stack to stacks and increase start
-        stack = tuple(cards[start:end])
-        stacks.append(stack)
-        start = end
-    # cards left over?
-    else:
-        if start < len(cards):
-            stack = tuple(cards[start:])
-            stacks.append(stack)
+            # step() recursively
+            if stack_sizes:
+                step(cards, stack_sizes)
+            # append any leftover cards
+            elif cards:
+                stacks.append(cards)
 
+    step(cards, stack_sizes)
     return tuple(stacks)

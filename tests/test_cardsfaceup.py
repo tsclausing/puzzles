@@ -72,4 +72,4 @@ class CardsFaceUp(unittest.TestCase):
         self.assertEqual(_cut(cards, 1, 0, 10), ((FaceUp,), (), (FaceDown, FaceUp, FaceUp)))
 
         # stack sizes include negative
-        self.assertEqual(_cut(cards, -1, -10), ((FaceUp,), (FaceDown, FaceUp, FaceUp)))
+        self.assertEqual(_cut(cards, -1, -10), ((FaceUp,), (FaceUp, FaceDown, FaceUp)))
