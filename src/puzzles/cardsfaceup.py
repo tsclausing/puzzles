@@ -55,7 +55,7 @@ def new(flip_count=4):
     flip_count = min(abs(flip_count), 51) or 1
 
     deck = [FaceDown for _ in range(52)]
-    deck[:flip_count] = _flip(deck[:flip_count])
+    deck[:flip_count] = _flip(tuple(deck[:flip_count]))
     random.shuffle(deck)
     return Puzzle(tuple(deck), flip_count)
 
